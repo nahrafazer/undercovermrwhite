@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undercover & Mr. White - Supabase Live</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Undercover & Mr. White - Compact Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Supabase SDK -->
@@ -11,17 +11,24 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
         
+        :root {
+            --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #0f172a;
             color: #f8fafc;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+            padding-bottom: var(--safe-area-inset-bottom);
         }
 
         .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -33,11 +40,16 @@
 
         .role-card {
             perspective: 1000px;
+            width: 100%;
+            max-width: 260px;
+            aspect-ratio: 3/4;
         }
 
         .role-card-inner {
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
+            height: 100%;
+            width: 100%;
         }
 
         .role-card.flipped .role-card-inner {
@@ -46,8 +58,10 @@
 
         .role-card-front, .role-card-back {
             backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
             position: absolute;
             inset: 0;
+            border-radius: 1.25rem;
         }
 
         .role-card-back {
@@ -57,33 +71,33 @@
         .segmented-control {
             display: flex;
             background: #1e293b;
-            padding: 4px;
-            border-radius: 12px;
+            padding: 2px;
+            border-radius: 10px;
         }
 
         .segmented-item {
             flex: 1;
             text-align: center;
-            padding: 8px;
+            padding: 6px 2px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
-            font-weight: 600;
-            font-size: 0.875rem;
+            font-weight: 700;
+            font-size: 0.75rem;
         }
 
         .segmented-item.active {
             background: #3b82f6;
             color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
 
         .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid #3b82f6;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #3b82f6;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
             animation: spin 1s linear infinite;
         }
 
@@ -93,43 +107,70 @@
         }
 
         .animate-pop {
-            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pop 0.3s ease-out;
         }
 
         @keyframes pop {
-            0% { transform: scale(0.9); opacity: 0; }
+            0% { transform: scale(0.97); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+
+        .tab-btn {
+            position: relative;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            color: #60a5fa;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 3px;
+            background: #60a5fa;
+            border-radius: 10px;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 3px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        input { font-size: 16px !important; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-4 pb-12">
+<body class="min-h-screen flex flex-col items-center p-3 sm:p-5">
 
-    <!-- Header -->
-    <header class="w-full max-w-2xl mt-8 mb-12 text-center">
-        <h1 class="text-4xl font-800 tracking-tight mb-2 uppercase">
+    <!-- Header - More Compact -->
+    <header class="w-full max-w-lg mt-1 mb-4 text-center animate-pop">
+        <h1 class="text-2xl sm:text-3xl font-800 tracking-tight uppercase leading-none">
             <span class="text-white">Under</span><span class="gradient-text">cover</span>
         </h1>
-        <p class="text-slate-400 text-sm font-medium">Versi Supabase Terhubung ✨</p>
+        <p class="text-slate-500 text-[10px] font-semibold tracking-widest mt-1 uppercase">Premium Edition</p>
     </header>
 
     <!-- App Container -->
-    <main id="app" class="w-full max-w-md space-y-6">
+    <main id="app" class="w-full max-w-md mx-auto space-y-4 flex-1">
         <!-- Screens injected here -->
     </main>
 
-    <!-- Custom Notification Toast -->
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full bg-blue-600 text-white shadow-2xl transition-all opacity-0 translate-y-10 pointer-events-none z-50 text-sm font-bold">
-        Pesan di sini
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-5 py-2.5 rounded-full bg-blue-600 text-white shadow-xl transition-all opacity-0 translate-y-10 pointer-events-none z-50 text-xs font-bold text-center">
+        Pesan
     </div>
 
     <script>
         // --- KONFIGURASI SUPABASE ---
         const SUPABASE_URL = 'https://trxlkfdrzhdnatokwzda.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_pEd0EWC9NMo5hZrY4LGPvA_W_ZNVtiw';
-        
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Database lokal sebagai cadangan (fallback)
         const FALLBACK_WORDS = [
             { civilian: "Sate Ayam", undercover: "Sate Kambing" },
             { civilian: "Kopi", undercover: "Teh" },
@@ -140,11 +181,9 @@
 
         let state = {
             screen: 'LOBBY', 
+            lobbyTab: 'PLAYERS', 
             players: [], 
-            settings: {
-                undercoverCount: 1,
-                mrWhiteCount: 1
-            },
+            settings: { undercoverCount: 1, mrWhiteCount: 1 },
             currentRevealingIndex: 0,
             selectedWordPair: null,
             winner: null,
@@ -152,283 +191,220 @@
             isLoading: false
         };
 
-        // --- UTILS ---
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.innerText = message;
             toast.classList.remove('opacity-0', 'translate-y-10');
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-10');
-            }, 2500);
+            setTimeout(() => toast.classList.add('opacity-0', 'translate-y-10'), 2000);
         }
 
-        function shuffle(array) {
-            return array.sort(() => Math.random() - 0.5);
-        }
+        function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+        function switchLobbyTab(tab) { state.lobbyTab = tab; render(); }
 
         function updateSetting(type, value) {
-            const totalPlayers = state.players.length;
-            const newUndercover = type === 'undercover' ? value : state.settings.undercoverCount;
-            const newMrWhite = type === 'mrWhite' ? value : state.settings.mrWhiteCount;
-
-            if (totalPlayers > 0 && newUndercover + newMrWhite >= totalPlayers - 1) {
-                showToast("Terlalu banyak penyusup untuk jumlah pemain!");
-                return;
+            const total = state.players.length;
+            const newU = type === 'undercover' ? value : state.settings.undercoverCount;
+            const newM = type === 'mrWhite' ? value : state.settings.mrWhiteCount;
+            if (total > 0 && newU + newM >= total - 1) {
+                showToast("Mayoritas harus Warga!"); return;
             }
-
-            state.settings.undercoverCount = newUndercover;
-            state.settings.mrWhiteCount = newMrWhite;
+            state.settings.undercoverCount = newU;
+            state.settings.mrWhiteCount = newM;
             render();
         }
 
-        // --- DATABASE LOGIC ---
         async function fetchRandomWord() {
             try {
-                const { data, error } = await _supabase
-                    .from('word_pairs')
-                    .select('civilian, undercover');
-                
-                if (error) throw error;
-                if (!data || data.length === 0) {
-                    console.warn("Tabel kosong, menggunakan data lokal.");
-                    return FALLBACK_WORDS[Math.floor(Math.random() * FALLBACK_WORDS.length)];
-                }
-
+                const { data, error } = await _supabase.from('word_pairs').select('civilian, undercover');
+                if (error || !data || data.length === 0) return FALLBACK_WORDS[Math.floor(Math.random() * FALLBACK_WORDS.length)];
                 return data[Math.floor(Math.random() * data.length)];
-            } catch (err) {
-                console.error("Supabase Error:", err.message);
-                showToast("Koneksi Database Gagal. Menggunakan kata lokal.");
-                return FALLBACK_WORDS[Math.floor(Math.random() * FALLBACK_WORDS.length)];
-            }
+            } catch { return FALLBACK_WORDS[Math.floor(Math.random() * FALLBACK_WORDS.length)]; }
+        }
+
+        async function addCustomWord() {
+            const civ = document.getElementById('civ-word').value.trim();
+            const und = document.getElementById('und-word').value.trim();
+            const pass = document.getElementById('word-pass').value.trim();
+
+            if (!civ || !und) { showToast("Isi semua kolom!"); return; }
+            if (pass !== '12345678') { showToast("Sandi Salah!"); return; }
+
+            state.isLoading = true; render();
+            try {
+                const { error } = await _supabase.from('word_pairs').insert([{ civilian: civ, undercover: und }]);
+                if (error) throw error;
+                showToast("Berhasil disimpan!"); switchLobbyTab('PLAYERS');
+            } catch { showToast("Gagal menyimpan."); }
+            finally { state.isLoading = false; render(); }
         }
 
         async function startGame() {
-            const totalPlayers = state.players.length;
-            const { undercoverCount, mrWhiteCount } = state.settings;
-            
-            if (totalPlayers < 3) {
-                showToast("Butuh minimal 3 pemain!");
-                return;
-            }
-
-            if (undercoverCount === 0 && mrWhiteCount === 0) {
-                showToast("Pilih minimal satu penyusup!");
-                return;
-            }
-
-            state.isLoading = true;
-            render();
-
+            if (state.players.length < 3) { showToast("Min. 3 pemain!"); return; }
+            if (state.settings.undercoverCount + state.settings.mrWhiteCount === 0) { showToast("Min. 1 musuh!"); return; }
+            state.isLoading = true; render();
             state.selectedWordPair = await fetchRandomWord();
-            
             state.isLoading = false;
-            
             let roles = [];
-            for (let i = 0; i < undercoverCount; i++) roles.push('UNDERCOVER');
-            for (let i = 0; i < mrWhiteCount; i++) roles.push('MR_WHITE');
-            while (roles.length < totalPlayers) {
-                roles.push('CIVILIAN');
-            }
-            
+            for (let i=0; i<state.settings.undercoverCount; i++) roles.push('UNDERCOVER');
+            for (let i=0; i<state.settings.mrWhiteCount; i++) roles.push('MR_WHITE');
+            while (roles.length < state.players.length) roles.push('CIVILIAN');
             roles = shuffle(roles);
-
-            state.players = state.players.map((p, index) => ({
-                ...p,
-                role: roles[index],
-                word: roles[index] === 'CIVILIAN' ? state.selectedWordPair.civilian : 
-                      roles[index] === 'UNDERCOVER' ? state.selectedWordPair.undercover : '???',
-                isAlive: true
+            state.players = state.players.map((p, i) => ({
+                ...p, role: roles[i], isAlive: true,
+                word: roles[i] === 'CIVILIAN' ? state.selectedWordPair.civilian : (roles[i] === 'UNDERCOVER' ? state.selectedWordPair.undercover : '???')
             }));
+            state.currentRevealingIndex = 0; state.screen = 'REVEAL'; render();
+        }
 
-            state.currentRevealingIndex = 0;
-            state.screen = 'REVEAL';
+        function nextReveal() {
+            if (state.currentRevealingIndex < state.players.length - 1) {
+                state.currentRevealingIndex++; render();
+            } else { state.screen = 'GAME'; render(); }
+        }
+
+        function handleVote(id) {
+            const p = state.players.find(x => x.id === id);
+            p.isAlive = false; state.eliminatedPlayer = p;
+            if (p.role === 'MR_WHITE') { state.screen = 'MRWHITE_GUESS'; }
+            else { checkWinCondition(); }
             render();
         }
 
-        // --- GAME LOGIC ---
-        function handleVote(votedId) {
-            const player = state.players.find(p => p.id === votedId);
-            player.isAlive = false;
-            state.eliminatedPlayer = player;
-
-            if (player.role === 'MR_WHITE') {
-                state.screen = 'MRWHITE_GUESS';
-            } else {
-                checkWinCondition();
-            }
-            render();
-        }
-
-        function submitMrWhiteGuess(guess) {
-            const isCorrect = guess.toLowerCase().trim() === state.selectedWordPair.civilian.toLowerCase();
-            if (isCorrect) {
-                state.winner = 'MR_WHITE';
-                state.screen = 'RESULT';
-            } else {
-                checkWinCondition();
-            }
+        function submitMrWhiteGuess(g) {
+            if (g.toLowerCase().trim() === state.selectedWordPair.civilian.toLowerCase()) {
+                state.winner = 'MR_WHITE'; state.screen = 'RESULT';
+            } else { checkWinCondition(); }
             render();
         }
 
         function checkWinCondition() {
             const alive = state.players.filter(p => p.isAlive);
-            const aliveCivilians = alive.filter(p => p.role === 'CIVILIAN');
-            const aliveOthers = alive.filter(p => p.role !== 'CIVILIAN');
-
-            if (aliveOthers.length === 0) {
-                state.winner = 'CIVILIANS';
-                state.screen = 'RESULT';
-            } else if (aliveOthers.length >= aliveCivilians.length) {
-                state.winner = 'IMPOSTORS'; 
-                state.screen = 'RESULT';
-            } else {
-                state.screen = 'GAME';
-            }
+            const civs = alive.filter(p => p.role === 'CIVILIAN');
+            const bads = alive.filter(p => p.role !== 'CIVILIAN');
+            if (bads.length === 0) { state.winner = 'CIVILIANS'; state.screen = 'RESULT'; }
+            else if (bads.length >= civs.length) { state.winner = 'IMPOSTORS'; state.screen = 'RESULT'; }
+            else { state.screen = 'GAME'; }
         }
 
-        // --- UI COMPONENTS ---
+        function resetGame() {
+            state.players = state.players.map(p => ({ ...p, isAlive: true, role: null, word: null }));
+            state.winner = null; state.screen = 'LOBBY'; render();
+        }
+
         const Components = {
             Lobby: () => `
-                <div class="glass-card p-6 rounded-3xl animate-pop space-y-6">
-                    <div>
-                        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-                            <i data-lucide="users" class="text-blue-400"></i> Pemain (${state.players.length})
-                        </h2>
-                        
-                        <div class="space-y-2 mb-4 max-h-48 overflow-y-auto pr-1" id="player-list">
-                            ${state.players.length === 0 ? '<p class="text-slate-500 italic text-center py-4 text-sm">Tambahkan nama temanmu...</p>' : ''}
-                            ${state.players.map(p => `
-                                <div class="flex items-center justify-between bg-slate-800/40 p-2 pl-4 rounded-xl border border-white/5 animate-pop">
-                                    <span class="font-semibold text-sm">${p.name}</span>
-                                    <button onclick="removePlayer('${p.id}')" class="p-1 text-slate-500 hover:text-red-400 transition-colors">
-                                        <i data-lucide="minus-circle" class="w-4 h-4"></i>
-                                    </button>
-                                </div>
-                            `).join('')}
+                <div class="glass-card p-4 rounded-[1.5rem] animate-pop space-y-4 shadow-xl">
+                    <div class="flex border-b border-white/5 pb-0.5">
+                        <button onclick="switchLobbyTab('PLAYERS')" class="tab-btn flex-1 text-[10px] font-800 uppercase tracking-widest py-2 ${state.lobbyTab === 'PLAYERS' ? 'active' : 'text-slate-500'}">Pemain</button>
+                        <button onclick="switchLobbyTab('WORDS')" class="tab-btn flex-1 text-[10px] font-800 uppercase tracking-widest py-2 ${state.lobbyTab === 'WORDS' ? 'active' : 'text-slate-500'}">Kata</button>
+                    </div>
+                    ${state.lobbyTab === 'PLAYERS' ? `
+                        <div class="space-y-3">
+                            <div class="space-y-1.5 max-h-[8rem] overflow-y-auto pr-0.5 custom-scroll">
+                                ${state.players.length === 0 ? '<p class="text-slate-500 italic text-center py-4 text-[11px]">Tambahkan minimal 3 teman...</p>' : ''}
+                                ${state.players.map(p => `
+                                    <div class="flex items-center justify-between bg-slate-800/40 p-2 pl-3 rounded-xl border border-white/5 animate-pop">
+                                        <span class="font-bold text-xs tracking-tight">${p.name}</span>
+                                        <button onclick="removePlayer('${p.id}')" class="p-1 text-slate-500 hover:text-red-400 transition-colors"><i data-lucide="x" class="w-3 h-3"></i></button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="flex gap-2">
+                                <input type="text" id="player-name" placeholder="Nama..." class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 ring-blue-500 transition-all placeholder:text-slate-600">
+                                <button onclick="addPlayer()" class="bg-blue-600 hover:bg-blue-500 px-3 rounded-lg transition-all active:scale-95"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                            </div>
                         </div>
-
-                        <div class="flex gap-2">
-                            <input type="text" id="player-name" placeholder="Nama..." 
-                                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 ring-blue-500 transition-all">
-                            <button onclick="addPlayer()" class="bg-blue-600 hover:bg-blue-700 p-3 rounded-xl transition-all">
-                                <i data-lucide="plus"></i>
+                        <div class="pt-3 border-t border-white/5 grid grid-cols-2 gap-3">
+                            <div class="space-y-1.5">
+                                <label class="text-[9px] font-black text-slate-500 uppercase flex justify-between"><span>Undercover</span><span class="text-blue-400">${state.settings.undercoverCount}</span></label>
+                                <div class="segmented-control">${[0,1,2].map(n => `<div onclick="updateSetting('undercover', ${n})" class="segmented-item ${state.settings.undercoverCount === n ? 'active' : 'text-slate-500'}">${n}</div>`).join('')}</div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[9px] font-black text-slate-500 uppercase flex justify-between"><span>Mr. White</span><span class="text-purple-400">${state.settings.mrWhiteCount}</span></label>
+                                <div class="segmented-control">${[0,1,2].map(n => `<div onclick="updateSetting('mrWhite', ${n})" class="segmented-item ${state.settings.mrWhiteCount === n ? 'active' : 'text-slate-500'}">${n}</div>`).join('')}</div>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="space-y-3 animate-pop py-1">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="space-y-1">
+                                    <label class="text-[9px] font-bold text-slate-500 uppercase ml-1">Warga</label>
+                                    <input type="text" id="civ-word" placeholder="Kopi" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:ring-1 ring-blue-500">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-[9px] font-bold text-slate-500 uppercase ml-1">Undercover</label>
+                                    <input type="text" id="und-word" placeholder="Teh" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:ring-1 ring-purple-500">
+                                </div>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[9px] font-bold text-slate-500 uppercase ml-1">Sandi Admin</label>
+                                <input type="password" id="word-pass" placeholder="••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:ring-1 ring-red-500">
+                            </div>
+                            <button onclick="addCustomWord()" ${state.isLoading ? 'disabled' : ''} class="w-full bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl border border-white/5 text-[11px] font-bold flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50">
+                                ${state.isLoading ? '<div class="spinner"></div>' : '<i data-lucide="save" class="w-3 h-3"></i> SIMPAN'}
                             </button>
                         </div>
-                    </div>
-
-                    <div class="pt-4 border-t border-white/10 space-y-4">
-                        <h2 class="text-xs font-black uppercase tracking-widest text-slate-500">Kustomisasi Peran</h2>
-                        
-                        <div class="space-y-4">
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-black text-slate-400 flex justify-between uppercase">
-                                    <span>Undercover</span>
-                                    <span class="text-blue-400">${state.settings.undercoverCount}</span>
-                                </label>
-                                <div class="segmented-control">
-                                    ${[0, 1, 2, 3].map(n => `
-                                        <div onclick="updateSetting('undercover', ${n})" 
-                                             class="segmented-item ${state.settings.undercoverCount === n ? 'active' : 'text-slate-500'}">
-                                            ${n}
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-black text-slate-400 flex justify-between uppercase">
-                                    <span>Mr. White</span>
-                                    <span class="text-purple-400">${state.settings.mrWhiteCount}</span>
-                                </label>
-                                <div class="segmented-control">
-                                    ${[0, 1, 2].map(n => `
-                                        <div onclick="updateSetting('mrWhite', ${n})" 
-                                             class="segmented-item ${state.settings.mrWhiteCount === n ? 'active' : 'text-slate-500'}">
-                                            ${n}
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    `}
                 </div>
-
-                <button onclick="startGame()" ${state.isLoading ? 'disabled' : ''} class="w-full bg-gradient-to-r from-blue-600 to-purple-600 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-purple-900/20 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3">
-                    ${state.isLoading ? '<div class="spinner"></div> MENGAMBIL KATA...' : 'MULAI PERMAINAN'}
+                <button onclick="startGame()" ${state.isLoading ? 'disabled' : ''} class="w-full bg-gradient-to-r from-blue-600 to-purple-600 py-3.5 rounded-2xl font-800 text-sm shadow-lg shadow-purple-900/20 active:scale-95 flex items-center justify-center gap-2 uppercase tracking-widest">
+                    ${state.isLoading ? '<div class="spinner"></div>' : 'Mulai Sesi'}
                 </button>
             `,
 
             Reveal: () => {
-                const player = state.players[state.currentRevealingIndex];
+                const p = state.players[state.currentRevealingIndex];
                 return `
-                    <div class="text-center space-y-8 animate-pop">
-                        <div>
-                            <p class="text-slate-400 uppercase tracking-widest font-bold text-[10px] mb-1">Melihat Kartu:</p>
-                            <h2 class="text-3xl font-black text-white">${player.name}</h2>
+                    <div class="text-center space-y-6 animate-pop flex flex-col items-center">
+                        <div class="px-2">
+                            <p class="text-slate-500 uppercase tracking-widest font-black text-[9px] mb-1">Berikan ke:</p>
+                            <h2 class="text-2xl font-black text-white">${p.name}</h2>
                         </div>
-
-                        <div id="role-card" class="role-card w-full aspect-[3/4] max-w-[280px] mx-auto cursor-pointer" onclick="this.classList.toggle('flipped')">
-                            <div class="role-card-inner relative w-full h-full">
-                                <div class="role-card-front glass-card rounded-3xl flex flex-col items-center justify-center border-2 border-blue-500/30">
-                                    <i data-lucide="fingerprint" class="w-16 h-16 text-blue-500 mb-4 opacity-50"></i>
-                                    <p class="font-bold text-slate-400 text-xs">Ketuk untuk mengintip</p>
+                        <div id="role-card" class="role-card cursor-pointer" onclick="this.classList.toggle('flipped')">
+                            <div class="role-card-inner relative shadow-2xl">
+                                <div class="role-card-front glass-card flex flex-col items-center justify-center border-2 border-blue-500/10 p-6">
+                                    <div class="w-14 h-14 bg-blue-600/10 rounded-full flex items-center justify-center mb-4"><i data-lucide="fingerprint" class="w-8 h-8 text-blue-500 animate-pulse"></i></div>
+                                    <p class="font-bold text-slate-400 text-[11px]">Ketuk untuk melihat</p>
                                 </div>
-                                <div class="role-card-back bg-white rounded-3xl flex flex-col items-center justify-center p-6 text-slate-900 shadow-2xl">
-                                    <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Kata Rahasia:</p>
-                                    <h3 class="text-4xl font-black mb-4 text-center leading-tight">${player.word}</h3>
-                                    <div class="px-3 py-1 rounded-full text-[10px] font-black bg-slate-100 border border-slate-200 uppercase tracking-widest ${player.role === 'CIVILIAN' ? 'text-blue-600' : player.role === 'MR_WHITE' ? 'text-purple-600' : 'text-red-600'}">
-                                        Peran: ${player.role.replace('_', ' ')}
-                                    </div>
+                                <div class="role-card-back bg-white flex flex-col items-center justify-center p-6 text-slate-900">
+                                    <p class="text-[9px] font-black uppercase text-slate-400 mb-2">Kata Rahasia:</p>
+                                    <h3 class="text-3xl font-black mb-4 leading-tight break-words w-full text-center">${p.word}</h3>
+                                    <div class="px-4 py-1.5 rounded-full text-[9px] font-black bg-slate-100 border border-slate-200 uppercase tracking-widest ${p.role==='CIVILIAN'?'text-blue-600':p.role==='MR_WHITE'?'text-purple-600':'text-red-600'}">Peran: ${p.role.replace('_',' ')}</div>
                                 </div>
                             </div>
                         </div>
-
-                        <button onclick="nextReveal()" class="w-full bg-slate-800 py-4 rounded-2xl font-bold border border-white/10">
-                            SAYA SUDAH LIHAT
-                        </button>
+                        <button onclick="nextReveal()" class="w-full bg-slate-800/80 border border-white/5 py-4 rounded-xl font-bold text-slate-400 hover:text-white transition-all active:scale-95 text-xs">SAYA SUDAH LIHAT</button>
                     </div>
                 `;
             },
 
             Game: () => `
-                <div class="space-y-6 animate-pop">
-                    <div class="glass-card p-6 rounded-3xl">
+                <div class="space-y-4 animate-pop">
+                    <div class="glass-card p-5 rounded-[1.5rem] shadow-lg">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-purple-600/20 rounded-xl flex items-center justify-center">
-                                <i data-lucide="mic" class="text-purple-400 w-5 h-5"></i>
-                            </div>
-                            <h2 class="text-xl font-bold">Diskusi</h2>
+                            <div class="w-10 h-10 bg-purple-600/20 rounded-xl flex items-center justify-center"><i data-lucide="message-square" class="text-purple-400 w-5 h-5"></i></div>
+                            <h2 class="text-base font-bold">Diskusi Ronde</h2>
                         </div>
-                        <p class="text-slate-400 text-xs leading-relaxed mb-6">Berikan deskripsi singkat. Jangan membocorkan kata ke Mr. White!</p>
-                        
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-2 gap-2 max-h-[14rem] overflow-y-auto pr-1 custom-scroll">
                             ${state.players.map(p => `
-                                <div class="p-3 rounded-xl border transition-all ${p.isAlive ? 'bg-slate-800/80 border-white/5' : 'bg-red-950/20 border-red-900/30 opacity-40 grayscale'}">
-                                    <p class="font-bold truncate text-xs text-white">${p.name}</p>
-                                    <p class="text-[8px] uppercase font-black ${p.isAlive ? 'text-green-500' : 'text-red-500'}">
-                                        ${p.isAlive ? 'Aktif' : 'Tereliminasi'}
-                                    </p>
+                                <div class="p-3 rounded-xl border transition-all ${p.isAlive ? 'bg-slate-800/60 border-white/5' : 'bg-red-950/20 border-red-900/30 opacity-40 grayscale'}">
+                                    <p class="font-bold truncate text-[11px] text-white">${p.name}</p>
+                                    <p class="text-[8px] font-black tracking-tight ${p.isAlive?'text-emerald-500':'text-red-500'}">${p.isAlive?'AKTIF':'ELIMINASI'}</p>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
-
-                    <button onclick="state.screen = 'VOTE'; render();" class="w-full bg-red-600 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-red-900/40">
-                        VOTING SEKARANG
-                    </button>
+                    <button onclick="state.screen='VOTE'; render();" class="w-full bg-red-600 py-4 rounded-2xl font-800 text-sm shadow-xl active:scale-95 tracking-widest uppercase">VOTING SEKARANG</button>
                 </div>
             `,
 
             Vote: () => `
-                <div class="glass-card p-6 rounded-3xl animate-pop">
-                    <h2 class="text-xl font-bold mb-2 tracking-tight">Siapa Pengkhianatnya?</h2>
-                    <p class="text-slate-400 text-xs mb-6 tracking-wide">Pilih satu orang yang paling mencurigakan.</p>
-                    
-                    <div class="space-y-2">
+                <div class="glass-card p-5 rounded-[1.5rem] animate-pop shadow-xl space-y-4">
+                    <div class="text-center"><h2 class="text-xl font-black tracking-tight">Siapa Penyusupnya?</h2></div>
+                    <div class="space-y-2 max-h-[15rem] overflow-y-auto pr-1 custom-scroll">
                         ${state.players.filter(p => p.isAlive).map(p => `
-                            <button onclick="handleVote('${p.id}')" class="w-full text-left bg-slate-800/50 hover:bg-red-950/50 p-4 rounded-xl border border-white/5 transition-all flex justify-between items-center group">
-                                <span class="font-bold text-sm">${p.name}</span>
-                                <i data-lucide="skull" class="w-4 h-4 text-slate-600 group-hover:text-red-500"></i>
+                            <button onclick="handleVote('${p.id}')" class="w-full text-left bg-slate-800/40 hover:bg-red-600 group p-4 rounded-xl border border-white/5 transition-all flex justify-between items-center active:scale-95">
+                                <span class="font-bold text-sm tracking-tight">${p.name}</span>
+                                <i data-lucide="target" class="w-4 h-4 text-slate-600 group-hover:text-white"></i>
                             </button>
                         `).join('')}
                     </div>
@@ -436,90 +412,46 @@
             `,
 
             MrWhiteGuess: () => `
-                <div class="glass-card p-8 rounded-3xl text-center space-y-6 border-2 border-purple-500/50 animate-pop">
-                    <div class="w-20 h-20 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto">
-                        <i data-lucide="brain" class="w-10 h-10 text-white"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-black uppercase">MR. WHITE TERKEPUNG!</h2>
-                        <p class="text-slate-400 mt-2 text-sm">Mr. White (<b>${state.eliminatedPlayer.name}</b>) harus menebak kata Warga untuk menang!</p>
-                    </div>
-                    
-                    <input type="text" id="guess-input" placeholder="Tebak kata kunci..." 
-                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-4 text-center text-xl font-bold outline-none focus:ring-2 ring-purple-500 transition-all uppercase">
-                    
-                    <button onclick="submitMrWhiteGuess(document.getElementById('guess-input').value)" class="w-full bg-purple-600 py-4 rounded-2xl font-bold text-lg">
-                        KIRIM TEBAKAN
-                    </button>
+                <div class="glass-card p-6 rounded-[2rem] text-center space-y-5 border-2 border-purple-500/40 shadow-xl animate-pop">
+                    <div class="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto rotate-12"><i data-lucide="brain" class="w-8 h-8 text-white"></i></div>
+                    <h2 class="text-xl font-black uppercase tracking-tighter">Menebak Kata...</h2>
+                    <input type="text" id="guess-input" placeholder="Tebak kata..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-4 text-center text-lg font-black outline-none focus:ring-2 ring-purple-600 uppercase">
+                    <button onclick="submitMrWhiteGuess(document.getElementById('guess-input').value)" class="w-full bg-purple-600 py-4 rounded-xl font-800 text-sm active:scale-95">KIRIM TEBAKAN</button>
                 </div>
             `,
 
             Result: () => {
-                let title = "", color = "", icon = "", desc = "";
-                if (state.winner === 'CIVILIANS') {
-                    title = "WARGA MENANG!"; color = "text-blue-400"; icon = "shield-check"; desc = "Warga berhasil mengamankan kota!";
-                } else if (state.winner === 'MR_WHITE') {
-                    title = "MR. WHITE MENANG!"; color = "text-purple-400"; icon = "crown"; desc = "Tebakan tepat! Mr. White mencuri kemenangan.";
-                } else {
-                    title = "PENYUSUP MENANG!"; color = "text-red-400"; icon = "skull"; desc = "Penyusup berhasil memanipulasi semua orang!";
-                }
-
+                const isCiv = state.winner === 'CIVILIANS';
+                const isMr = state.winner === 'MR_WHITE';
                 return `
-                    <div class="glass-card p-8 rounded-3xl text-center space-y-6 animate-pop">
-                        <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto">
-                            <i data-lucide="${icon}" class="w-10 h-10 ${color}"></i>
-                        </div>
-                        
-                        <h2 class="text-3xl font-black ${color} tracking-tighter uppercase">${title}</h2>
-                        
-                        <div class="bg-slate-900/50 p-4 rounded-2xl text-left space-y-3 border border-white/5">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="space-y-1 border-r border-white/10">
-                                    <p class="text-[8px] font-black text-blue-500 uppercase">Warga</p>
-                                    <p class="font-bold text-sm text-white">${state.selectedWordPair.civilian}</p>
-                                </div>
-                                <div class="space-y-1">
-                                    <p class="text-[8px] font-black text-red-500 uppercase">Undercover</p>
-                                    <p class="font-bold text-sm text-white">${state.selectedWordPair.undercover}</p>
-                                </div>
+                    <div class="glass-card p-6 rounded-[2rem] text-center space-y-6 animate-pop shadow-2xl">
+                        <div class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto"><i data-lucide="${isCiv?'shield-check':isMr?'crown':'skull'}" class="w-8 h-8 ${isCiv?'text-blue-400':isMr?'text-purple-400':'text-red-400'}"></i></div>
+                        <h2 class="text-2xl font-black ${isCiv?'text-blue-400':isMr?'text-purple-400':'text-red-400'} uppercase leading-none">${state.winner.replace('_',' ')} MENANG!</h2>
+                        <div class="bg-slate-900/50 p-4 rounded-xl text-left border border-white/5 space-y-2">
+                            <div class="grid ${state.settings.undercoverCount>0?'grid-cols-2':'grid-cols-1'} gap-4">
+                                <div class="text-center"><p class="text-[8px] font-black text-blue-500 uppercase mb-0.5">Warga</p><p class="font-bold text-sm text-white">${state.selectedWordPair.civilian}</p></div>
+                                ${state.settings.undercoverCount>0?`<div class="text-center border-l border-white/5"><p class="text-[8px] font-black text-red-500 uppercase mb-0.5">Undercover</p><p class="font-bold text-sm text-white">${state.selectedWordPair.undercover}</p></div>`:''}
                             </div>
                         </div>
-
-                        <div class="space-y-1 pt-4 max-h-40 overflow-y-auto">
-                            ${state.players.map(p => `
-                                <div class="flex justify-between text-[11px] py-1 px-2 border-b border-white/5">
-                                    <span class="text-slate-400">${p.name}</span>
-                                    <span class="font-black ${p.role === 'CIVILIAN' ? 'text-blue-500' : p.role === 'MR_WHITE' ? 'text-purple-500' : 'text-red-500'}">
-                                        ${p.role.replace('_', ' ')}
-                                    </span>
-                                </div>
-                            `).join('')}
+                        <div class="space-y-1.5 max-h-32 overflow-y-auto custom-scroll pr-1">
+                            ${state.players.map(p => `<div class="flex justify-between items-center text-[10px] py-1.5 border-b border-white/5 px-1"><span class="text-slate-400">${p.name}</span><span class="font-black uppercase ${p.role==='CIVILIAN'?'text-blue-500':p.role==='MR_WHITE'?'text-purple-500':'text-red-500'}">${p.role.replace('_',' ')}</span></div>`).join('')}
                         </div>
-
-                        <button onclick="resetGame()" class="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-lg">
-                            MAIN LAGI
-                        </button>
+                        <button onclick="resetGame()" class="w-full bg-white text-slate-900 py-4 rounded-2xl font-black text-sm active:scale-95">Main Lagi</button>
                     </div>
                 `;
             }
         };
 
-        // --- CORE ENGINE ---
         function addPlayer() {
             const input = document.getElementById('player-name');
             const name = input.value.trim();
             if (name) {
                 state.players.push({ id: Math.random().toString(36).substr(2, 9), name: name, role: null, word: null, isAlive: true });
-                input.value = '';
-                render();
-                input.focus();
+                input.value = ''; render(); input.focus();
             }
         }
 
-        function removePlayer(id) {
-            state.players = state.players.filter(p => p.id !== id);
-            render();
-        }
+        function removePlayer(id) { state.players = state.players.filter(p => p.id !== id); render(); }
 
         function render() {
             const container = document.getElementById('app');
@@ -532,10 +464,11 @@
                 case 'RESULT': container.innerHTML = Components.Result(); break;
             }
             lucide.createIcons();
-            const input = document.getElementById('player-name');
-            if (input) input.addEventListener('keypress', (e) => e.key === 'Enter' && addPlayer());
+            if (state.screen === 'LOBBY') {
+                const input = document.getElementById('player-name');
+                if (input) input.addEventListener('keypress', (e) => e.key === 'Enter' && addPlayer());
+            }
         }
-
         window.onload = render;
     </script>
 </body>
